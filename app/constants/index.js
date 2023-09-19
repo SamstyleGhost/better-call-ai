@@ -1,3 +1,4 @@
+// Navlinks for the navigation bar
 export const NavLinks = [
   {
     title: "Home",

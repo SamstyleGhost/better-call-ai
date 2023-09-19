@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react'
 import { Menu, X } from 'react-feather';
-import { NavLinks } from '../constants';
+import { NavLinks } from '../../constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 

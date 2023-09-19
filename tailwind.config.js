@@ -12,6 +12,24 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      fontFamily: {
+        'imprima': ['Imprima']
+      },
+      keyframes: {
+        "slide-in": {
+          "0%": {
+            "-webkit-transform": "translateX(120%)",
+            transform: "translateX(120%)",
+          },
+          "100%": {
+            "-webkit-transform": "translateX(0%)",
+            transform: "translateX(0%)",
+          },
+        },
+      },
+      animation: {
+        "slide-in": "slide-in 0.5s ease-out",
+      },
     },
   },
   plugins: [],

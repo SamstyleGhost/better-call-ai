@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react'
 import { Menu, X } from 'react-feather';
-import { NavLinks } from '../../constants';
+import { NavLinks } from '@constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -40,7 +40,7 @@ const NavMenu = () => {
 				}
 				{toggleMenu &&(
 					<ul
-						className='z-10 fixed top-4 right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none flex flex-col justify-start items-end rounded-md text-white animate-slide-in'
+						className='z-10 fixed top-4 right-2 p-3 w-[70vw] h-screen shadow-2xl md:hidden list-none flex flex-col justify-start items-end rounded-lg backdrop-blur-md text-white animate-slide-in'
 					>
 						<li className="text-2xl w-fill my-2">
 							<X onClick={() => setToggleMenu(false)} /> 

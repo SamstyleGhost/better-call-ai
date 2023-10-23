@@ -12,15 +12,17 @@ const Chat = () => {
     message: 'Hello! How may I help you today?'
   }]);
 
+  // TODO: Will have to add a loading state animation while the messages are sent to the server and the assistant is loading the answer
   const handleSubmit = (e) => {
     e.preventDefault();
 
     setMessages([ ...messages, { sender: 'user', message: query }]);
+    setQuery('');
   }
 
   return (
-    <div className='w-full h-[630px] md:h-[600px] flex flex-col justify-between'>
-      <div className='w-full h-full flex flex-col gap-4 overflow-y-auto pr-4'>
+    <div className='w-full h-[630px] md:h-[600px] lg:h-[1175px] flex flex-col justify-between'>
+      <div className='w-full flex flex-col gap-4 overflow-y-auto pr-4'>
         {messages.map((message, index) => <Message key={index} sender={message.sender} message={message.message}/>)}
       </div>
       <div className='w-full mt-4'>
@@ -42,7 +44,7 @@ const Chat = () => {
         </div>
       </form>
     </div>
-    </div>
+  </div>
   )
 }
 

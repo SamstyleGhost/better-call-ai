@@ -7,14 +7,14 @@ const InfoTab = () => {
   return (
     <div className='w-full md:w-1/4 mt-8 md:mt-0 flex flex-col gap-8 justify-between items-center md:items-start'>
       <div className='w-full flex flex-col gap-8'>
-        <div>
+        <div className='w-full md:w-3/4 flex justify-center'>
           <span>Info Tab</span>
         </div>
         <div className='flex flex-col gap-4 w-full justify-between items-center md:items-start'>
-          <CustomTab />
-          <CustomTab />
-          <CustomTab />
-          <CustomTab />
+          <CustomTab data="Category 1" />
+          <CustomTab data="Category 2" />
+          <CustomTab data="Category 3" />
+          <CustomTab data="Category 4" />
         </div>
         <hr className="my-2 w-full md:w-3/4"/>
       </div>

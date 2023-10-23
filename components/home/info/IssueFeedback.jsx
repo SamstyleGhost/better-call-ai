@@ -1,5 +1,3 @@
-import React from 'react'
-
 const IssueFeedback = () => {
   return (
     <div className='italic'>

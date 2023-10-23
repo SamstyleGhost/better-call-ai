@@ -1,4 +1,3 @@
-import React from 'react';
 import { Gitlab } from 'react-feather';
 import NavMenu from './NavMenu'
 

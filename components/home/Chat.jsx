@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import Message from './chat/Message';
 import IconButton from './chat/IconButton';
 

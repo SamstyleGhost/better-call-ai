@@ -1,4 +1,3 @@
-import React from 'react';
 import { GitHub, Mail } from 'react-feather';
 
 const Social = () => {

@@ -1,4 +1,3 @@
-import React from 'react'
 import CustomTab from './info/CustomTab'
 import IssueFeedback from './info/IssueFeedback'
 import Social from './info/Social'

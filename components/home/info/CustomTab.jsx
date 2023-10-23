@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowRight } from 'react-feather';
 
 const CustomTab = ({ data }) => {

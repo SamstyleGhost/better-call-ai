@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+
 import { Mic, Send } from 'react-feather'
 
 const IconButton = ({ icon }) => {

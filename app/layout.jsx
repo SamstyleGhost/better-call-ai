@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className='h-full'>
+        <div className='md:h-screen h-full p-6 gradient-background flex flex-col flex-grow'>
           <NavBar />
           {children}
         </div>

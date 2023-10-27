@@ -48,13 +48,14 @@ html {
 }
 
 body {
-  min-height: 100vh;
-  padding: 24px;
   color: var(--text);
+}
+
+.gradient-background {
   background: linear-gradient(
-      to bottom right,
-      transparent,
-      var(--secondary)
-    )
-    var(--background);
+    to bottom right,
+    transparent,
+    var(--secondary)
+  )
+  var(--background);
 }

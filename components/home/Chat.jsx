@@ -17,34 +17,43 @@ const Chat = () => {
     e.preventDefault();
 
     setMessages([ ...messages, { sender: 'user', message: query }]);
+
+    // * POST request which will contain the query as the parameter 
+    // app.post(req,res) => {req.query = query} 
+    // createEmbedding(req.query)
+    // SQL query => will give top 5 results
+    // From that result texts, from MongoDB, get legal ontology information used in those sections
+    // Append that and give it to the ChatGPT prompt
+    // ChatGPT response will be given back as res.json
+
     setQuery('');
   }
 
   return (
-    <div className='w-full h-[630px] md:h-[600px] lg:h-[1175px] flex flex-col justify-between'>
+    <div className='w-full max-md:h-[475px] flex flex-col flex-grow justify-between self-end'>
       <div className='w-full flex flex-col gap-4 overflow-y-auto pr-4'>
         {messages.map((message, index) => <Message key={index} sender={message.sender} message={message.message}/>)}
       </div>
       <div className='w-full mt-4'>
-      <form onSubmit={handleSubmit} className='bg-secondary p-2 rounded-lg flex justify-center'>
-        <textarea 
-          type='text' 
-          placeholder='Enter your query here...' 
-          value={query}
-          className='w-full bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <div className='flex items-center mx-4 gap-8'>
-          <IconButton 
-            icon='send'
+        <form onSubmit={handleSubmit} className='bg-secondary p-2 rounded-lg flex justify-center'>
+          <textarea 
+            type='text' 
+            placeholder='Enter your query here...' 
+            value={query}
+            className='w-full bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <IconButton 
-            icon='mic'
-          />
-        </div>
-      </form>
+          <div className='flex items-center mx-4 gap-8'>
+            <IconButton 
+              icon='send'
+            />
+            <IconButton 
+              icon='mic'
+            />
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   )
 }
 

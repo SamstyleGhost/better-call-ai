@@ -13,12 +13,25 @@ const Chat = () => {
   }]);
 
   // TODO: Will have to add a loading state animation while the messages are sent to the server and the assistant is loading the answer
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setMessages([ ...messages, { sender: 'user', message: query }]);
+    console.log("Into submit");
 
     // * POST request which will contain the query as the parameter 
+    await fetch('/api/search',{
+        method: 'POST',
+        body: JSON.stringify({
+          query: query
+        }),
+        'content-type': 'application/json'
+      }
+    )
+    .then(response => response.json())
+    .then(data => {
+      console.log(data.message);
+    })
     // app.post(req,res) => {req.query = query} 
     // createEmbedding(req.query)
     // SQL query => will give top 5 results

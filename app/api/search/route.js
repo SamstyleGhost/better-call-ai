@@ -39,7 +39,7 @@ export async function POST (req) {
       return NextResponse.json({ message: error }, { status: 500 });
     } 
 
-    return NextResponse.json({ message: JSON.stringify(data) }, { status: 200 });
+    return NextResponse.json({ message: data }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: error }, { status: 500 });
   }

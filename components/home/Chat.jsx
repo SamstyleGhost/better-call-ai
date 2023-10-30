@@ -90,8 +90,8 @@ const Chat = () => {
   }
 
   return (
-    <div className='w-full max-md:h-[475px] flex flex-col flex-grow-0 justify-between self-end'>
-      <div className='w-full flex flex-col gap-4 overflow-y-auto pr-4'>
+    <div className='w-full flex flex-col flex-grow-1 justify-between self-end'>
+      <div className='w-full chat-height flex flex-col gap-4 overflow-y-auto'>
         {messages.map((message, index) => <Message key={index} sender={message.sender} message={message.message}/>)}
       </div>
       <div className='w-full mt-4'>
@@ -100,7 +100,7 @@ const Chat = () => {
             type='text' 
             placeholder='Enter your query here...' 
             value={query}
-            className='w-full bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
+            className='w-full h-20 bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
             onChange={(e) => setQuery(e.target.value)}
           />
           <div className='flex items-center mx-4 gap-8'>

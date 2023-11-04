@@ -2,8 +2,12 @@
 import { useState } from 'react'
 import Message from './chat/Message';
 import IconButton from './chat/IconButton';
+import { Spinner } from '@components';
+import { useSectionContext } from '@context';
 
 const Chat = () => {
+
+  const { setSections } = useSectionContext();
 
   const [query, setQuery] = useState('');
   const [answer,  setAnswer] = useState('');
@@ -19,7 +23,6 @@ const Chat = () => {
     e.preventDefault();
     setLoading(true);
 
-    // setMessages([ ...messages, { sender: 'user', message: query }]);
     setMessages(prev => [...prev, { sender: 'user', message: query }])
 
     //  @param : contains the user query as the parameter 
@@ -30,17 +33,19 @@ const Chat = () => {
         query: query
       }),
       'content-type': 'application/json'
-    })
+    });
 
     // console.log("SearchResponse: ", searchResponse);
     const results = await searchResponse.json();
 
+    console.log("Results are: ",results);
+    setSections(results.message);
     const sections = await results.message.map(section => section.section_text).join('\n');
     // console.log(results.message);
 
     // console.log(sections);
 
-    console.log("Working");
+    // console.log("Working");
 
     const answerResponse = await fetch('/api/chat', {
       method: 'POST',
@@ -58,8 +63,7 @@ const Chat = () => {
 
     // console.log("Answer response: ", answerResponse);
     const queryAnswer = await answerResponse.json();
-    
-    console.log("Answer is: ",queryAnswer.message);
+
     setAnswer(queryAnswer.message);
 
     // if(!data) {
@@ -101,15 +105,21 @@ const Chat = () => {
             placeholder='Enter your query here...' 
             value={query}
             className='w-full h-20 bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
+            disabled={loading}
             onChange={(e) => setQuery(e.target.value)}
           />
           <div className='flex items-center mx-4 gap-8'>
-            <IconButton 
+            {loading 
+            ? <Spinner /> 
+            : <IconButton 
               icon='send'
-            />
-            <IconButton 
+            />}
+            
+            {loading 
+            ? <Spinner /> 
+            : <IconButton 
               icon='mic'
-            />
+            />}
           </div>
         </form>
       </div>

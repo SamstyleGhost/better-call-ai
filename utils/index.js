@@ -8,7 +8,8 @@ export const OpenAIStream = async ({query, sections}) => {
 
   const gptPrompt = `You are a helpful legal assistant that answers queries based on the Indian legal system.
   The following metadata will have all the information that you need to answer the user's queries: ${sections}.
-  Respond in brief. Deny responses to any request that does not seem to be a legal query.`;
+  Answer the user query only based on the information contained in the metadata above.
+  Respond in detail. Always suggest to consult nearby lawyers. Deny responses to any request that does not seem to be a legal query.`;
 
   try {
     

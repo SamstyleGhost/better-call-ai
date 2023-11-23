@@ -49,6 +49,6 @@ module.exports = {
         "slide-out": "slide-out 0.5s ease-out",
       },
     },
+    plugins: [],
   },
-  plugins: [],
 }

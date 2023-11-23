@@ -30,6 +30,7 @@ export const OpenAIStream = async ({query, sections}) => {
         }],
         max_tokens: 500,
         temperature: 0.0,
+        // stream: true
       })
     })
 

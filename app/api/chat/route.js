@@ -6,9 +6,7 @@ export async function POST(req){
   try {
     const body = await req.json();
 
-    console.log("Inside try");
     const stream = await OpenAIStream({query: body.query, sections:body.sections});
-    console.log("Stream in route is: ", stream);
 
     return NextResponse.json({ message: stream }, { status: 200 })
   } catch (error) {

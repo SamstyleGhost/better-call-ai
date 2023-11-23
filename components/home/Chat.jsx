@@ -35,17 +35,11 @@ const Chat = () => {
       'content-type': 'application/json'
     });
 
-    // console.log("SearchResponse: ", searchResponse);
     const results = await searchResponse.json();
 
     console.log("Results are: ",results);
     setSections(results.message);
     const sections = await results.message.map(section => section.section_text).join('\n');
-    // console.log(results.message);
-
-    // console.log(sections);
-
-    // console.log("Working");
 
     const answerResponse = await fetch('/api/chat', {
       method: 'POST',

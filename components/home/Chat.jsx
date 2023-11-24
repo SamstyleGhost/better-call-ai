@@ -45,6 +45,7 @@ const Chat = () => {
 
     await results.message.map(section => {
       const dataObject = {
+        act_number: section.act_number,
         document_name: section.document_name,
         section_title: section.section_title,
         section_text: section.section_text

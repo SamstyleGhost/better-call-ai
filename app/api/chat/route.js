@@ -1,4 +1,4 @@
-import { OpenAIStream } from "@utils";
+import { OpenAIStream, ActOntology } from "@utils";
 import { NextResponse } from "next/server";
 
 export async function POST(req){
@@ -6,7 +6,9 @@ export async function POST(req){
   try {
     const body = await req.json();
 
-    const stream = await OpenAIStream({query: body.query, sections:body.sections });
+    const ontology = await ActOntology({ sections: body.sections });
+
+    const stream = await OpenAIStream({ query: body.query, sections: body.sections, ontology: ontology });
 
     return NextResponse.json({ message: stream }, { status: 200 })
   } catch (error) {

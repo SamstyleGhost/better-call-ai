@@ -12,6 +12,7 @@ const Chat = () => {
   const [query, setQuery] = useState('');
   const [answer,  setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sectionData, setSectionData] = useState([{}]);
 
   const [messages, setMessages] = useState([{
     sender: 'assistant',
@@ -39,7 +40,18 @@ const Chat = () => {
 
     console.log("Results are: ",results);
     setSections(results.message);
-    const sections = await results.message.map(section => section.section_text).join('\n');
+
+    let sections = [];
+
+    await results.message.map(section => {
+      const dataObject = {
+        document_name: section.document_name,
+        section_title: section.section_title,
+        section_text: section.section_text
+      };
+
+      sections.push(dataObject);
+    });
 
     const answerResponse = await fetch('/api/chat', {
       method: 'POST',

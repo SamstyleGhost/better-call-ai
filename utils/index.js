@@ -6,9 +6,11 @@ export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPAB
 
 export const OpenAIStream = async ({query, sections}) => {
 
-  const gptPrompt = `You are a helpful legal assistant that answers queries based on the Indian legal system.
-  The following metadata will have all the information that you need to answer the user's queries: ${sections}.
-  Answer the user query only based on the information contained in the metadata above.
+  const sectionData = sections.map(section => JSON.stringify(section)).join("\n");
+
+  const gptPrompt = `You are a helpful legal assistant that answers queries based on the Indian legal system.This is the legal data that you would need to answer the user's questions: ${sectionData}.
+  Answer the user query only based on the information contained in the data that has been provided to you in this prompt.
+  Cite the sections used and the name of the act which are defined in the object as section_title and document_name respectively.
   Respond in detail. Always suggest to consult nearby lawyers. Deny responses to any request that does not seem to be a legal query.`;
 
   try {
@@ -40,7 +42,6 @@ export const OpenAIStream = async ({query, sections}) => {
     // console.log("Response is: ", responseData);
     
     const stream = await responseData.choices[0].message.content;
-    console.log("Stream in index: ",stream);
 
     return stream;
 

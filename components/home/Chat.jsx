@@ -122,11 +122,6 @@ const Chat = () => {
               icon='send'
             />}
             
-            {loading 
-            ? <Spinner /> 
-            : <IconButton 
-              icon='mic'
-            />}
           </div>
         </form>
       </div>

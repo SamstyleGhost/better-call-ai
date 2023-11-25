@@ -1,6 +1,8 @@
 const About = () => {
   return (
-    <div>About</div>
+    <div className="py-4">
+      <p>We are TY - 03.</p>
+    </div>
   )
 }
 

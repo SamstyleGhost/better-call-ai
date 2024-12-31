@@ -1,8 +1,47 @@
 import { createClient } from '@supabase/supabase-js';
 import { MongoClient } from 'mongodb';
-import { createParser } from 'eventsource-parser';
+import Groq from 'groq-sdk';
 
 export const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const groq = new Groq({ api_key: process.env.GROQ_API_KEY });
+
+export const getGroqChatStream = async ({ query, sections, ontology }) => {
+
+  const sectionData = sections.map(section => JSON.stringify(section)).join("\n");
+  const ontologyText = ontology.map(word => JSON.stringify(word)).join("\n");
+
+  const prompt = `You are a helpful legal assistant that answers queries based on the Indian legal system.This is the legal data that you would need to answer the user's questions: ${sectionData}.
+  Also make use of this ontology: ${ontologyText}. If any of the words, defined as word, are used from the above ontology in the response, make sure to add the respective definiton as clarity while answering.
+  Answer the user query only based on the information contained in the data that has been provided to you in this prompt.
+  Cite the sections used and the name of the act which are defined in the object as section_title and document_name respectively.
+  Respond in detail. Always suggest to consult nearby lawyers. Deny responses to any request that does not seem to be a legal query.`;
+
+  try {
+
+    const response = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: prompt,
+        },
+        {
+          role: "user",
+          content: query,
+        },
+      ],
+      model: "llama3-70b-8192",
+      temperature: 0.2,
+      max_tokens: 1024,
+      top_p: 1,
+      stop: null,
+      stream: false,
+    });
+
+    return response.choices[0].message.content;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 
 export const OpenAIStream = async ({query, sections, ontology}) => {

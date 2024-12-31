@@ -10,7 +10,7 @@ const Chat = () => {
   const { setSections } = useSectionContext();
 
   const [query, setQuery] = useState('');
-  const [answer,  setAnswer] = useState('');
+  const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
   const [sectionData, setSectionData] = useState([{}]);
 
@@ -28,7 +28,7 @@ const Chat = () => {
 
     //  @param : contains the user query as the parameter 
     //  @output : Gives the max_limit number of similar sections
-    const searchResponse = await fetch('/api/search',{
+    const searchResponse = await fetch('/api/search', {
       method: 'POST',
       body: JSON.stringify({
         query: query
@@ -38,7 +38,7 @@ const Chat = () => {
 
     const results = await searchResponse.json();
 
-    console.log("Results are: ",results);
+    console.log("Results are: ", results);
     setSections(results.message);
 
     let sections = [];
@@ -63,12 +63,11 @@ const Chat = () => {
       'content-type': 'application/json'
     })
 
-    if(!answerResponse) {
+    if (!answerResponse) {
       setLoading(false);
       return;
     }
 
-    // console.log("Answer response: ", answerResponse);
     const queryAnswer = await answerResponse.json();
 
     setAnswer(queryAnswer.message);
@@ -103,25 +102,25 @@ const Chat = () => {
   return (
     <div className='w-full flex flex-col flex-grow-1 justify-between self-end'>
       <div className='w-full chat-height flex flex-col gap-4 overflow-y-auto'>
-        {messages.map((message, index) => <Message key={index} sender={message.sender} message={message.message}/>)}
+        {messages.map((message, index) => <Message key={index} sender={message.sender} message={message.message} />)}
       </div>
       <div className='w-full mt-4'>
         <form onSubmit={handleSubmit} className='bg-secondary p-2 rounded-lg flex justify-center'>
-          <textarea 
-            type='text' 
-            placeholder='Enter your query here...' 
+          <textarea
+            type='text'
+            placeholder='Enter your query here...'
             value={query}
-            className='w-full h-20 bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none' 
+            className='w-full h-20 bg-primary border-2 border-transparent p-2 outline-0 focus:border-accent rounded-lg resize-none'
             disabled={loading}
             onChange={(e) => setQuery(e.target.value)}
           />
           <div className='flex items-center mx-4 gap-8'>
-            {loading 
-            ? <Spinner /> 
-            : <IconButton 
-              icon='send'
-            />}
-            
+            {loading
+              ? <Spinner />
+              : <IconButton
+                icon='send'
+              />}
+
           </div>
         </form>
       </div>

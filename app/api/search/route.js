@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { pipeline } from "@xenova/transformers";
 import { supabase } from "@utils";
 
+export const config = {
+  runtime: 'edge', // Use Edge Runtime for lower memory and faster execution
+};
+
 export async function POST(req) {
 
   const pipe = await pipeline("feature-extraction", "Xenova/gte-large")

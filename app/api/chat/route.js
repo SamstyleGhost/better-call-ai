@@ -1,4 +1,4 @@
-import { getGroqChatStream, ActOntology } from "@utils";
+import { ActOntology, EdenAIStream } from "@utils";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -9,7 +9,7 @@ export async function POST(req) {
 
     const ontology = await ActOntology({ sections: body.sections });
 
-    const stream = await getGroqChatStream({ query: body.query, sections: body.sections, ontology: ontology });
+    const stream = await EdenAIStream({ query: body.query, sections: body.sections, ontology: ontology });
 
     return NextResponse.json({ message: stream }, { status: 200 })
   } catch (error) {

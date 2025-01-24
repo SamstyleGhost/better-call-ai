@@ -43,6 +43,46 @@ export const getGroqChatStream = async ({ query, sections, ontology }) => {
   }
 }
 
+export const EdenAIStream = async({ query, sections, ontology }) => {
+  
+  const sectionData = sections.map(section => JSON.stringify(section)).join("\n");
+  const ontologyText = ontology.map(word => JSON.stringify(word)).join("\n");
+
+  const prompt = `You are a helpful legal assistant that answers queries based on the Indian legal system.This is the legal data that you would need to answer the user's questions: ${sectionData}.
+  Also make use of this ontology: ${ontologyText}. If any of the words, defined as word, are used from the above ontology in the response, make sure to add the respective definiton as clarity while answering.
+  Answer the user query only based on the information contained in the data that has been provided to you in this prompt.
+  Cite the sections used and the name of the act which are defined in the object as section_title and document_name respectively.
+  Respond in detail. Always suggest to consult nearby lawyers. Deny responses to any request that does not seem to be a legal query.`;
+  
+  try {
+    const response = await fetch("https://api.edenai.run/v2/text/chat", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "content-type": "application/json",
+        Authorization: `Bearer ${process.env.EDEN_AI_KEY}`
+      },
+      body: JSON.stringify({
+        response_as_dict: true,
+        attributes_as_list: false,
+        show_base_64: true,
+        show_original_response: false,
+        temperature: 0,
+        max_tokens: 1000,
+        tool_choice: "auto",
+        providers: ["openai"],
+        chatbot_global_action: prompt,
+        text: query,
+      }),
+    });
+
+    const apiCall = await response.json();
+    return apiCall.openai.generated_text;
+  } catch (error) {
+    console.err(error)  
+  }
+}
+
 
 export const OpenAIStream = async ({query, sections, ontology}) => {
 
@@ -153,7 +193,7 @@ export const ActOntology = async({ sections }) => {
     const result = await mongodb.db(process.env.MONGO_DB_NAME).collection(process.env.MONGO_COLLECTION_NAME).findOne({ act_number: act_nums_array[0] });
 
     for(let i = 0; i < result.act_ontology.length; i++) {
-      sections.map(section => {
+      sections && sections.map(section => {
         if(section.section_text.includes(result.act_ontology[i].word)){
           ontology_words.add(result.act_ontology[i].word);
         }

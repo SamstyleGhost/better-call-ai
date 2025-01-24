@@ -28,7 +28,7 @@ const Chat = () => {
 
     //  @param : contains the user query as the parameter 
     //  @output : Gives the max_limit number of similar sections
-    const searchResponse = await fetch('/api/search', {
+    const searchResponse = await fetch('/api/search-eden', {
       method: 'POST',
       body: JSON.stringify({
         query: query
@@ -37,9 +37,12 @@ const Chat = () => {
     });
 
     const results = await searchResponse.json();
+    console.log("Eden results: ",results.message)
 
     console.log("Results are: ", results);
-    setSections(results.message);
+    if(Array.isArray(results.message) && results.message.length !== 0){
+      setSections(results.message);
+    }
 
     let sections = [];
 
@@ -72,28 +75,7 @@ const Chat = () => {
 
     setAnswer(queryAnswer.message);
 
-    // if(!data) {
-    //   setLoading(false);
-    //   return;
-    // }
-
-    // const reader = data.getReader();
-    // const decoder = new TextDecoder();
-    // let done = false;
-
-    // while(!done) {
-    //   console.log("Inside while");
-    //   const { value, doneReading } = await reader.read();
-    //   done = doneReading;
-
-    //   const chunkValue = decoder.decode(value);
-    //   setAnswer(prev => prev + chunkValue);
-    // }
     setMessages(prev => [...prev, { sender: 'assistant', message: queryAnswer.message }]);
-
-    // * From that result texts, from MongoDB, get legal ontology information used in those sections
-    // Append that and give it to the ChatGPT prompt
-    // ChatGPT response will be given back as res.json
 
     setQuery('');
     setLoading(false);

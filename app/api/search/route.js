@@ -1,36 +1,49 @@
 import { NextResponse } from "next/server";
-import { pipeline } from "@xenova/transformers";
+import axios from 'axios'
 import { supabase } from "@utils";
 
-export const runtime = "edge";
-
 export async function POST(req) {
-
-  const pipe = await pipeline("feature-extraction", "Xenova/gte-large")
-
   try {
-
     const body = await req.json();
-    console.log("body in search route: ", body)
+    console.log("Body in eden: ", body)
+    
+    const options = {
+      method: "POST",
+      url: 'https://api.edenai.run/v2/text/embeddings',
+      headers: {
+        accept: 'application/json', 
+        'content-type': 'application/json',
+        Authorization: `Bearer ${process.env.EDEN_AI_KEY}`
+      },
+      data: {
+        settings: '{"openai": "text-embedding-ada-002"}',
+        response_as_dict: true,
+        attributes_as_list: false,
+        show_base_64: true,
+        show_original_response: false,
+        providers: ['openai'],
+        texts: [body.query]
+      }}
+    const response = await axios.request(options)
+    
+    const embedding = await response.data.openai.items[0].embedding
+    console.log("Length of the embedding is: ",embedding)
 
-    const response = await pipe(body.query, { pooling: 'mean', normalize: true })
-    const embedding = Array.from(response.data)
-
-    const { data, error } = await supabase.rpc('user_query_search_updated', {
+    const { data, error } = await supabase.rpc('user_query_search', {
       query_embedding: embedding,
       similarity_threshold: 0.5,
       match_count: 3
     });
-
-    console.log("Data in search route: ", data)
-
-    if (error) {
+    
+    console.log("supabase data: ", data)
+    
+    if(error) {
       console.log(error);
-      return NextResponse.json({ message: error }, { status: 500 });
-    }
-
+      return NextResponse.json({ message: [], error: error }, { status: 400 });
+    } 
+    
     return NextResponse.json({ message: data }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: error }, { status: 500 });
+    return NextResponse.json({ message: [], error:error }, { status: 500 });
   }
 }

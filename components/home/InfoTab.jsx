@@ -8,7 +8,7 @@ const InfoTab = () => {
 
   const { sections } = useSectionContext();
   
-  sections.map((section) => {
+  sections && sections.map((section) => {
     console.log(section.section_title);
   })
 

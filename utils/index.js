@@ -79,7 +79,7 @@ export const EdenAIStream = async({ query, sections, ontology }) => {
     const apiCall = await response.json();
     return apiCall.openai.generated_text;
   } catch (error) {
-    console.err(error)  
+    console.error(error)  
   }
 }
 

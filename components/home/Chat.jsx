@@ -4,6 +4,7 @@ import Message from './chat/Message';
 import IconButton from './chat/IconButton';
 import { Spinner } from '@components';
 import { useSectionContext } from '@context';
+import axios from 'axios';
 
 const Chat = () => {
 
@@ -12,7 +13,6 @@ const Chat = () => {
   const [query, setQuery] = useState('');
   const [answer, setAnswer] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sectionData, setSectionData] = useState([{}]);
 
   const [messages, setMessages] = useState([{
     sender: 'assistant',
@@ -28,57 +28,55 @@ const Chat = () => {
 
     //  @param : contains the user query as the parameter 
     //  @output : Gives the max_limit number of similar sections
-    const searchResponse = await fetch('/api/search-eden', {
-      method: 'POST',
-      body: JSON.stringify({
-        query: query
-      }),
-      'content-type': 'application/json'
-    });
-
-    const results = await searchResponse.json();
-    console.log("Eden results: ",results.message)
-
-    console.log("Results are: ", results);
-    if(Array.isArray(results.message) && results.message.length !== 0){
-      setSections(results.message);
-    }
-
-    let sections = [];
-
-    await results.message.map(section => {
-      const dataObject = {
-        act_number: section.act_number,
-        document_name: section.document_name,
-        section_title: section.section_title,
-        section_text: section.section_text
-      };
-
-      sections.push(dataObject);
-    });
-
-    const answerResponse = await fetch('/api/chat', {
-      method: 'POST',
-      body: JSON.stringify({
+    try {
+      const searchResponse = await axios.post("/api/search", {
         query: query,
-        sections: sections
-      }),
-      'content-type': 'application/json'
-    })
+      });
 
-    if (!answerResponse) {
+      console.log("Eden results: ", searchResponse.data.message);
+      let sections = [];
+
+      await searchResponse.data.message.map((section) => {
+        const dataObject = {
+          act_number: section.act_number,
+          document_name: section.document_name,
+          section_title: section.section_title,
+          section_text: section.section_text,
+        };
+
+        sections.push(dataObject);
+      });
+      
+      setSections(sections);
+
+      try {
+        const answerResponse = await axios.post("/api/chat", {
+          query: query,
+          sections: sections,
+        });
+
+        setAnswer(answerResponse.data.message);
+
+        setMessages((prev) => [
+          ...prev,
+          { sender: "assistant", message: answerResponse.data.message },
+        ]);
+      } catch (error) {
+        console.error(error);
+        setMessages((prev) => [
+          ...prev, { sender: "assistant", message: "Sorry! There was an error showing the answer. Please retry"},
+        ]);
+      }
+
+    } catch (error) {
+      console.error(error)
+        setMessages((prev) => [
+          ...prev, { sender: "assistant", message: "Sorry! There was an error showing the answer. Please retry"},
+        ]);
+    } finally {
+      setQuery("");
       setLoading(false);
-      return;
     }
-
-    const queryAnswer = await answerResponse.json();
-
-    setAnswer(queryAnswer.message);
-
-    setMessages(prev => [...prev, { sender: 'assistant', message: queryAnswer.message }]);
-
-    setQuery('');
-    setLoading(false);
   }
 
   return (

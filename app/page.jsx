@@ -8,7 +8,7 @@ export default function Home() {
         <hr className="my-4"/>
         <Chat />
       </div>
-      {/* <InfoTab /> */}
+      <InfoTab />
     </div>
   )
 }
